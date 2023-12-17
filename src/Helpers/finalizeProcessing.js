@@ -149,7 +149,7 @@ module.exports = function finalizeProcessing(Processing, options) {
    * aggregate all source code into a single file, then rewrite that
    * source and bind to canvas via new Processing(canvas, sourcestring).
    * @param {CANVAS} canvas The html canvas element to bind to
-   * @param {String[]} source The array of files that must be loaded
+   * @param {String[]} sources The array of files that must be loaded
    * @param {Function} onComplete A callback, called with the sketch as the argument.
    */
   var loadSketchFromSources = Processing.loadSketchFromSources = function(canvas, sources, onComplete) {
@@ -242,8 +242,8 @@ module.exports = function finalizeProcessing(Processing, options) {
 
     var canvas = document.getElementsByTagName('canvas'),
       filenames;
-
-    for (i = 0, l = canvas.length; i < l; i++) {
+    const l = canvas.length;
+    for (i = 0; i < l; i++) {
       // datasrc and data-src are deprecated.
       var processingSources = canvas[i].getAttribute('data-processing-sources');
       if (processingSources === null) {

@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 // build script for generating processing.js
 
 var Browser = {
@@ -34,27 +34,22 @@ module.exports={
   "main": "processing.min.js",
   "bugs": "https://github.com/processing-js/processing-js/issues",
   "devDependencies": {
-    "argv": "~0.0.2",
-    "browserify": "^11.0.1",
-    "express": "~3.3.3",
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.8",
-    "grunt-contrib-jshint": "~0.4.3",
-    "http-server": "^0.9.0",
-    "minifier": "^0.7.1",
-    "node-minify": "~0.7.3",
-    "nunjucks": "~0.1.9",
-    "open": "0.0.3"
+    "argv": "^0.0.2",
+    "browserify": "^17.0.0",
+    "express": "^4.18.2",
+    "grunt": "^1.6.1",
+    "grunt-cli": "^1.4.3",
+    "grunt-contrib-jshint": "^3.2.0",
+    "http-server": "^14.1.1",
+    "nunjucks": "^3.2.4",
+    "terser": "^5.26.0"
   },
   "scripts": {
     "test": "node test",
     "test:manual": "http-server -o test/manual",
-    "start": "browserify build.js -o processing.js && minify --output processing.min.js processing.js"
+    "start": "browserify build.js -o processing.js && terser processing.js --compress ecma=2020,computed_props=false > processing.min.js"
   },
-  "license": "MIT",
-  "dependencies": {
-    "minifier": "^0.7.1"
-  }
+  "license": "MIT"
 }
 
 },{}],3:[function(require,module,exports){
@@ -160,7 +155,7 @@ module.exports = {
     // Platform IDs
     OTHER:   0,
     WINDOWS: 1,
-    MAXOSX:  2,
+    MACOSX:  2,
     LINUX:   3,
 
     EPSILON: 0.0001,
@@ -916,7 +911,7 @@ module.exports = function finalizeProcessing(Processing, options) {
    * aggregate all source code into a single file, then rewrite that
    * source and bind to canvas via new Processing(canvas, sourcestring).
    * @param {CANVAS} canvas The html canvas element to bind to
-   * @param {String[]} source The array of files that must be loaded
+   * @param {String[]} sources The array of files that must be loaded
    * @param {Function} onComplete A callback, called with the sketch as the argument.
    */
   var loadSketchFromSources = Processing.loadSketchFromSources = function(canvas, sources, onComplete) {
@@ -1009,8 +1004,8 @@ module.exports = function finalizeProcessing(Processing, options) {
 
     var canvas = document.getElementsByTagName('canvas'),
       filenames;
-
-    for (i = 0, l = canvas.length; i < l; i++) {
+    const l = canvas.length;
+    for (i = 0; i < l; i++) {
       // datasrc and data-src are deprecated.
       var processingSources = canvas[i].getAttribute('data-processing-sources');
       if (processingSources === null) {

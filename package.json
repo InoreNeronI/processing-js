@@ -9,25 +9,20 @@
   "main": "processing.min.js",
   "bugs": "https://github.com/processing-js/processing-js/issues",
   "devDependencies": {
-    "argv": "~0.0.2",
-    "browserify": "^11.0.1",
-    "express": "~3.3.3",
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.8",
-    "grunt-contrib-jshint": "~0.4.3",
-    "http-server": "^0.9.0",
-    "minifier": "^0.7.1",
-    "node-minify": "~0.7.3",
-    "nunjucks": "~0.1.9",
-    "open": "0.0.3"
+    "argv": "^0.0.2",
+    "browserify": "^17.0.0",
+    "express": "^4.18.2",
+    "grunt": "^1.6.1",
+    "grunt-cli": "^1.4.3",
+    "grunt-contrib-jshint": "^3.2.0",
+    "http-server": "^14.1.1",
+    "nunjucks": "^3.2.4",
+    "terser": "^5.26.0"
   },
   "scripts": {
     "test": "node test",
     "test:manual": "http-server -o test/manual",
-    "start": "browserify build.js -o processing.js && minify --output processing.min.js processing.js"
+    "start": "browserify build.js -o processing.js && terser processing.js --compress ecma=2020,computed_props=false > processing.min.js"
   },
-  "license": "MIT",
-  "dependencies": {
-    "minifier": "^0.7.1"
-  }
+  "license": "MIT"
 }
